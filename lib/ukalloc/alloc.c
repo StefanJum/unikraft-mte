@@ -168,10 +168,13 @@ void *uk_malloc_ifpages(struct uk_alloc *a, __sz size)
 	metadata->base = (void *) intptr;
 
 #ifdef CONFIG_HAVE_MEMTAG
-	return ukarch_memtag_region(
+	/*uk_pr_err("MEMTAG_REGION\n");*/
+	void *tmp =  ukarch_memtag_region(
 		(void *)(intptr + METADATA_IFPAGES_SIZE_POW2),
 		size
 	);
+	/*uk_pr_err("%p TMP PTR\n", tmp);*/
+	return tmp;
 #else
 	return (void *)(intptr + METADATA_IFPAGES_SIZE_POW2);
 #endif /* CONFIG_HAVE_MEMTAG */
@@ -313,6 +316,9 @@ int uk_posix_memalign_ifpages(struct uk_alloc *a,
 	metadata->num_pages = num_pages;
 	metadata->base = (void *) intptr;
 
+	/*uk_pr_err("Memory Region Start: %p\n", *memptr);*/
+	/*uk_pr_err("Memory Region End: %p\n", *memptr + size);*/
+	/*uk_pr_err("Memory Region Size: %d\n", size);*/
 #ifdef CONFIG_HAVE_MEMTAG
 	ukarch_memtag_region(*memptr, size);
 #endif /* CONFIG_HAVE_MEMTAG */

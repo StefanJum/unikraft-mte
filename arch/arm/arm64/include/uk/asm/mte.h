@@ -32,6 +32,8 @@
 #error Do not include this header directly
 #endif
 
+#include <uk/arch/types.h>
+
 #define ARM64_FEAT_MTE		1
 #define ARM64_FEAT_MTE2		2
 #define ARM64_FEAT_MTE3		3
@@ -65,6 +67,17 @@
  */
 static inline __u64 mte_insert_random_tag(__u64 addr)
 {
+	//volatile __u64 reg;
+
+	//__asm__ __volatile__(
+			     //"irg	%x0, %x2, %x1\n"
+			     //: "=r"(reg) : "r"(mask), "r" (addr));
+	//return reg;
+	return addr;
+}
+
+static inline __u64 mte_get_exclude_mask(__u64 addr)
+{
 	__u64 reg;
 
 	__asm__ __volatile__("gmi	%x0, %x1, xzr\n"
@@ -81,11 +94,12 @@ static inline __u64 mte_insert_random_tag(__u64 addr)
  */
 static inline __u64 mte_load_alloc(__u64 addr)
 {
-	__u64 tag;
+	//__u64 tag;
 
-	__asm__ __volatile__ ("ldg	%x0, [%x1]\n"
-			      : "=&r" (tag) : "r"(addr));
-	return tag;
+	//__asm__ __volatile__ ("ldg	%x0, [%x1]\n"
+			      //: "=&r" (tag) : "r"(addr));
+	//return tag;
+	return addr;
 }
 
 /**
@@ -96,7 +110,7 @@ static inline __u64 mte_load_alloc(__u64 addr)
  */
 static inline void mte_store_alloc(__u64 addr)
 {
-	__asm__ __volatile__ ("stg	%x0, [%x0]"
-			      : : "r"(addr) : "memory");
+	//__asm__ __volatile__ ("stg	%0, [%0]"
+			      //: : "r"(addr) : "memory");
 }
 

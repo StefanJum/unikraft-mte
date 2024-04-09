@@ -34,6 +34,8 @@
 #include <uk/arch/memtag.h>
 #include <uk/arch/lcpu.h>
 #include <uk/arch/random.h>
+#include <uk/print.h>
+#include <uk/assert.h>
 
 void *ukarch_memtag_region(void *ptr, __sz size)
 {
@@ -46,6 +48,10 @@ void *ukarch_memtag_region(void *ptr, __sz size)
 	for (__sz i = 0; i < size; i += MTE_TAG_GRANULE)
 		mte_store_alloc(addr + i);
 
+	/*uk_pr_err("ADDR = %p\n", addr);*/
+	/*uk_pr_err("ADDR + 16 = %p\n", addr + 16);*/
+	/*uk_pr_err("ADDR + 17 = %p\n", addr + 250);*/
+	/*uk_pr_err("SIZE = %d\n", size);*/
 	return (void *)addr;
 }
 

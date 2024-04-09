@@ -63,7 +63,7 @@ int fdrop(struct vfscore_file *fp)
 		if (vfs_close(fp) != 0)
 			drele(fp->f_dentry);
 
-		free(fp);
+		uk_free(uk_alloc_get_default(), fp);
 
 		return 1;
 	}

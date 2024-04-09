@@ -100,11 +100,11 @@ static struct pipe_buf *pipe_buf_alloc(int capacity)
 
 	UK_ASSERT(POWER_OF_2(capacity));
 
-	pipe_buf = malloc(sizeof(*pipe_buf));
+	pipe_buf = uk_malloc(uk_alloc_get_default(), sizeof(*pipe_buf));
 	if (!pipe_buf)
 		return NULL;
 
-	pipe_buf->data = malloc(capacity);
+	pipe_buf->data = uk_malloc(uk_alloc_get_default(), capacity);
 	if (!pipe_buf->data) {
 		free(pipe_buf);
 		return NULL;
@@ -599,7 +599,7 @@ static int pipe_fd_alloc(struct pipe_file *pipe_file, int flags)
 	}
 
 	/* Allocate file, dentry, and vnode */
-	vfs_file = calloc(1, sizeof(*vfs_file));
+	vfs_file = uk_calloc(uk_alloc_get_default(), 1, sizeof(*vfs_file));
 	if (!vfs_file) {
 		ret = -ENOMEM;
 		goto ERR_MALLOC_VFS_FILE;
